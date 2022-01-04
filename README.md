@@ -1,5 +1,11 @@
 # RewardRaffle
-These are the smart contracts that make up the RewardRaffle Protocol
+These are the smart contracts that make up the RewardPool RewardRaffle Protocol. 
+
+All of the RewardPool Protocols are open-source and free to use. Please consider donating to the RewardPool treasury.
+
+https://twitter.com/RewardPool
+https://twitter.com/xrpant
+https://rewardpool.xyz
 
 There are two contracts that are available in flattened form:
 
