@@ -1003,6 +1003,12 @@ contract RewardRaffle is Ownable {
         lock = false;
     }
 
+    // Function to receive Ether. msg.data must be empty
+    receive() external payable {}
+
+    // Fallback function is called when msg.data is not empty
+    fallback() external payable {}
+    
     //Deposit SGB to the contract and wrap
     function depositSGB() public payable { 
         uint256 bal = msg.sender.balance;
