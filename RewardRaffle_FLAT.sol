@@ -9,7 +9,6 @@
 // File: contracts/RewardRaffle.sol
 
 
-
 pragma solidity >=0.7.6;
 
 interface IERC20 {
@@ -1010,14 +1009,22 @@ contract RewardRaffle is Ownable {
 
     // Fallback function is called when msg.data is not empty
     fallback() external payable {}
-    
-    //Deposit SGB to the contract and wrap
+
+    //Deposit SGB to the contract and wrap. Can only send 50%+ of your wallet balance
     function depositSGB() public payable { 
         uint256 bal = msg.sender.balance;
         uint256 val = msg.value;
         require(bal - val > 0, "Not enough SGB."); 
         //Wrap deposited amount
         IWNat(WNatAddr).deposit{value: val}();
+    }
+
+    function wrapSGB() public payable onlyOwner {
+        IWNat(WNatAddr).deposit{value: address(this).balance}();
+    }
+
+    function unwrapSGB(uint256 _val) public payable onlyOwner {
+        IWNat(WNatAddr).withdraw(_val);
     }
 
     function withdrawWrapped(uint256 _amount) public onlyOwner { 
@@ -1053,6 +1060,10 @@ contract RewardRaffle is Ownable {
     function callWinner(uint256 _ticket, uint256 _amount) public onlyOwner {
         addAllowance(pinkContract.ownerOf(_ticket), _amount);
         winningTickets.push(_ticket);
+    }
+
+    function claimOnly() public payable onlyOwner {
+        require(rmanContract.getEpochsWithUnclaimedRewards(address(this)).length > 0);
     }
 
     function internalWinner(uint256 _ticket, uint256 _amount) private {
